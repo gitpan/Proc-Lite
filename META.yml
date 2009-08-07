@@ -1,0 +1,26 @@
+---
+abstract: 'A lightweight module for running processes synchronously'
+author:
+  - 'jason hord <pravus@cpan.org>'
+build_requires:
+  ExtUtils::MakeMaker: 6.42
+  Test::More: 0.00
+configure_requires:
+  ExtUtils::MakeMaker: 6.42
+distribution_type: module
+generated_by: 'Module::Install version 0.91'
+license: MIT
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Proc-Lite
+no_index:
+  directory:
+    - inc
+    - t
+requires:
+  Carp: 0.00
+  Errno: 0.00
+  IO::Pipe: 0.00
+  IO::Select: 0.00
+version: 0.01
