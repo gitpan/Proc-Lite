@@ -148,8 +148,8 @@ used when capturing C<STDOUT> and C<STDERR> data from a child process.
 Creates a new C<Proc::Hevy::Reader> object.  C<$name> is a
 symbolic name for the reader.  C<$buffer> is the storage mechanism
 to be used for data read from the child process.  It can either
-be a simple scalar, an ARRAY reference, a CODE reference or a
-GLOB reference.
+be a simple scalar, an C<ARRAY> reference, a C<CODE> reference or a
+C<GLOB> reference.
 
 =item B<child( $handle )>
 

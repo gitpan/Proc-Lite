@@ -6,7 +6,7 @@ use warnings;
 use Carp;
 use Proc::Hevy;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 
 sub new {
@@ -111,7 +111,7 @@ Proc::Lite - A lightweight module for running processes synchronously
   }
 
   {
-    my $proc = Proc::Lite->exec(qw( ls -l ), @ARGV );
+    my $proc = Proc::Lite->exec( qw( ls -l ), @ARGV );
     if( $proc->success ) {
       print "success\n";
       print " => $_\n"
@@ -158,8 +158,8 @@ running the command.  C<%args> may contain the following options:
 
 Specifies the command to run.  The first form may expand shell
 meta-characters while the second form will not.  Review the
-documentation for C<exec> for more information.  The third
-form will run the given code reference in the child process
+documentation for C<exec()> for more information.  The third
+form will run the given C<CODE> reference in the child process
 and the fourth form does the same, but also passes in C<@args>
 as arguments to the subroutine.  This option is required.
 
@@ -175,12 +175,12 @@ Specifies data that may be sent to the child process's C<STDIN>.
 The first form simply sends the given string of bytes to the
 child process.  The second form will write individual array
 elements to the child process.  The third form will run the
-given code reference and write the return value to the child.
+given C<CODE> reference and write the return value to the child.
 A value of C<undef> signals that no more input should be sent
 to the child process.  The fourth form simply re-opens the
 child's C<STDIN> handle to the given filehandle allowing a
 pass-through effect.  If this option is not given, the
-child's STDIN will be reopened to C<'/dev/null'>.
+child's C<STDIN> will be reopened to C<'/dev/null'>.
 
 =back
 
@@ -204,7 +204,7 @@ the ways C<new()>'s C<command> argument may be specified.
 
 Runs the command specified in C<new()>.  It returns the
 C<Proc::Lite> object so that it can be called in
-conjunction with new (C<Proc::Lite-E<gt>new( ... )-E<gt>run>).
+conjunction with C<new()> (C<Proc::Lite-E<gt>new( ... )-E<gt>run>).
 
 =item B<status>
 
@@ -214,7 +214,7 @@ Returns the exit status from the process.
 
 Returns the C<STDOUT> output from the child process.  In
 list context, the output is returned as a list.  In scalar
-context, an array reference is returned.
+context, an C<ARRAY> reference is returned.
 
 =item B<stderr>
 

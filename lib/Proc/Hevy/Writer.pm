@@ -148,8 +148,8 @@ is used when writing to a child process's C<STDIN>.
 Creates a new C<Proc::Hevy::Writer> object.  C<$name>
 is a symbolic name for the writer.  C<$buffer> is the source
 mechanism to used for data written to the child process.  It
-can either be a simple scalar, an ARRAY reference, a CODE
-reference or a GLOB reference.
+can either be a simple scalar, an C<ARRAY> reference, a C<CODE>
+reference or a C<GLOB> reference.
 
 =item B<child( $handle )>
 

@@ -169,7 +169,7 @@ Proc::Hevy - A heavyweight module for running processes synchronously
 
 =head1 DESCRIPTION
 
-C<Proc::Lite> is a simplistic module for spawning child
+C<Proc::Hevy> is a simplistic module for spawning child
 processes in a synchronous manner.  It provides a simple interface
 for passing data to a process's C<STDIN> while also offering several
 methods for buffering C<STDOUT> and C<STDERR> output.
@@ -197,8 +197,8 @@ the following options:
 
 Specifies the command to run.  The first form may expand shell
 meta-characters while the second form will not.  Review the
-documentation for C<exec> for more information.  The third
-form will run the given code reference in the child process
+documentation for C<exec()> for more information.  The third
+form will run the given C<CODE> reference in the child process
 and the fourth form does the same, but also passes in C<@args>
 as arguments to the subroutine.  This option is required.
 
@@ -215,7 +215,7 @@ pipe data to the child process's C<STDIN> handle.  The first
 form simply specifies a string of bytes to write.  The second
 form will write each array element to the child one at a time
 until the array is empty.  The third form will write whatever
-string is returned by the given code reference until C<undef>
+string is returned by the given C<CODE> reference until C<undef>
 is returned.  Both the second and third forms append the
 current value of C<$\> if defined or C<"\n"> if not.  The
 fourth form simply re-opens the child process's C<STDIN>
@@ -236,7 +236,7 @@ If specified, identifies a data destination that will be used
 to pipe from the child process's C<STDOUT> handle.  The first
 form will append all input into a single string.  The second
 form will push C<$/>-delimited lines on the given array.  The
-third form will call the given code reference for each
+third form will call the given C<CODE> reference for each
 C<$/>-delimited line passing the line in as a single argument.
 The fourth form simply re-opens the child process's C<STDOUT>
 handle to the given filehandle allowing a pass-through effect.
