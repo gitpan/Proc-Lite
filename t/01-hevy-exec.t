@@ -10,35 +10,39 @@ $ENV{PATH} = '';
 my ( $perl ) = $^X =~ /^(.*)\z/;
 
 
-eval { Proc::Hevy->exec( fake => ) };
-like( $@, qr/^Odd number of parameters/, 'odd parameters' );
+fatal_exec( 'odd parameters',              qr/^Odd number of parameters/,                                     fake => );
+fatal_exec( 'missing parameters: command', qr/^command: Required parameter not defined/,                      fake => 'fake' );
+fatal_exec( 'invalid parameters: command', qr/^command: Must be an ARRAY reference/,                          command => { fake => 'fake' } );
+fatal_exec( 'invalid parameters: stdin',   qr/^stdin: Must be one of ARRAY, CODE or GLOB reference/,          command => 'fake', stdin  => { } );
+fatal_exec( 'invalid parameters: stdout',  qr/^stdout: Must be one of ARRAY, CODE, GLOB or SCALAR reference/, command => 'fake', stdout => { } );
+fatal_exec( 'invalid parameters: stderr',  qr/^stderr: Must be one of ARRAY, CODE, GLOB or SCALAR reference/, command => 'fake', stderr => { } );
 
-eval { Proc::Hevy->exec( fake => 'fake' ) };
-like( $@, qr/^command: Required parameter not defined/, 'missing parameters: command' );
+ok_exec( 'exec: CODE reference',  sub { } );
+ok_exec( 'exec: scalar',          "$perl -e 1" );
+ok_exec( 'exec: ARRAY reference', [ $perl, qw( -e 1 ) ] );
 
-eval { Proc::Hevy->exec( command => { fake => 'fake' } ) };
-like( $@, qr/^command: Must be an ARRAY reference/, 'invalid parameters: command' );
 
-eval { Proc::Hevy->exec( command => 'fake', stdin  => { } ) };
-like( $@, qr/^stdin: Must be one of ARRAY, CODE or GLOB reference/, 'invalid parameters: stdin' );
+sub fatal_exec {
+  my ( $name, $re, @args ) = @_;
 
-eval { Proc::Hevy->exec( command => 'fake', stdout => { } ) };
-like( $@, qr/^stdout: Must be one of ARRAY, CODE, GLOB or SCALAR reference/, 'invalid parameters: stdout' );
-
-eval { Proc::Hevy->exec( command => 'fake', stderr => { } ) };
-like( $@, qr/^stderr: Must be one of ARRAY, CODE, GLOB or SCALAR reference/, 'invalid parameters: stderr' );
-
-{
-  my $status = Proc::Hevy->exec( command => sub { } );
-  ok( $status == 0, 'exec: CODE reference' );
+  eval { Proc::Hevy->exec( @args ) };
+  like( $@, $re, $name );
 }
 
-{
-  my $status = Proc::Hevy->exec( command => "$perl -e 1" );
-  ok( $status == 0, 'exec: scalar' );
-}
+sub ok_exec {
+  my ( $name, $command ) = @_;
 
-{
-  my $status = Proc::Hevy->exec( command => [ $perl, qw( -e 1 ) ] );
-  ok( $status == 0, 'exec: ARRAY reference' );
+  my $status = Proc::Hevy->exec(
+    command => $command,
+    stdout  => \my $stdout,
+    stderr  => \my $stderr,
+  );
+
+  ok( $status == 0, $name )
+    or do {
+      diag( '  status: ' . $status );
+      diag( '  stdout: ' . ( defined $stdout ? $stdout : '' ) );
+      diag( '  stderr: ' . ( defined $stderr ? $stderr : '' ) );
+    }
+  ;
 }

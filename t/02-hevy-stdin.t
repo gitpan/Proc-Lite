@@ -7,41 +7,27 @@ use Proc::Hevy;
 
 my @values = ( 2 .. 4 );
 
-{
-  my $stdin = join "\n", @values;
-  my $status = Proc::Hevy->exec( command => \&command, stdin => $stdin );
-  my ( $es, $ec ) = ( ( $status & 0x00ff ), ( $status >> 8 ) );
-  ok( $es == 0, 'stdin: ARRAY reference' );
-  ok( $ec == 9, 'stdin: ARRAY reference' );
-}
-
-{
-  my $stdin = [ @values ];
-  my $status = Proc::Hevy->exec( command => \&command, stdin => $stdin );
-  my ( $es, $ec ) = ( ( $status & 0x00ff ), ( $status >> 8 ) );
-  ok( $es == 0, 'stdin: ARRAY reference' );
-  ok( $ec == 9, 'stdin: ARRAY reference' );
-}
-
-{
-  my $stdin = do { my @stdin = @values; sub { pop @stdin } };
-  my $status = Proc::Hevy->exec( command => \&command, stdin => $stdin );
-  my ( $es, $ec ) = ( ( $status & 0x00ff ), ( $status >> 8 ) );
-  ok( $es == 0, 'stdin: CODE reference' );
-  ok( $ec == 9, 'stdin: CODE reference' );
-}
+ok_exec( 'stdin: simple scalar',   \&command, join( "\n", @values ) );
+ok_exec( 'stdin: ARRAY reference', \&command, [ @values ] );
+ok_exec( 'stdin: CODE reference',  \&command, do { my @stdin = @values; sub { pop @stdin } } );
 
 # FIXME: add GLOB tests
 
 {
   local $\ = "\0";
-  my $stdin = \@values;
-  my $status = Proc::Hevy->exec( command => [ \&command, $\ ], stdin => $stdin );
-  my ( $es, $ec ) = ( ( $status & 0x00ff ), ( $status >> 8 ) );
-  ok( $es == 0, 'stdin: output record seperator' );
-  ok( $ec == 9, 'stdin: output record seperator' );
+  ok_exec( 'stdin: output record seperator', [ \&command, $\ ], \@values );
 }
 
+
+sub ok_exec {
+  my ( $name, $command, $stdin ) = @_;
+
+  my $status = Proc::Hevy->exec( command => $command, stdin => $stdin );
+
+  my ( $es, $ec ) = ( ( $status & 0x00ff ), ( $status >> 8 ) );
+  ok( $es == 0, $name );
+  ok( $ec == 9, $name );
+}
 
 sub command {
   my ( $irs ) = @_;
