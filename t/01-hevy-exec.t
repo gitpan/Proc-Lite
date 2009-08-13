@@ -5,7 +5,7 @@ use Test::More tests => 9;
 use Proc::Hevy;
 
 
-$ENV{PATH} = '';
+delete @ENV{ keys %ENV };
 
 my ( $perl ) = $^X =~ /^(.*)\z/;
 
