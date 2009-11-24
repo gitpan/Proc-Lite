@@ -1,7 +1,9 @@
 #!perl -T
 
-use Test::More tests => 20;
+use strict;
+use warnings;
 
+use Test::More tests => 20;
 use Proc::Hevy;
 
 

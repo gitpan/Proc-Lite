@@ -30,15 +30,15 @@ sub exec {
 
   ref( $args{stdin} ) =~ /^(?:ARRAY|CODE|GLOB)\z/
     or confess 'stdin: Must be one of ARRAY, CODE or GLOB reference'
-      if defined $args{stdin} and ref $args{stdin};
+      if exists $args{stdin} and ref $args{stdin};
 
   ref( $args{stdout} ) =~ /^(?:ARRAY|CODE|GLOB|SCALAR)\z/
     or confess 'stdout: Must be one of ARRAY, CODE, GLOB or SCALAR reference'
-      if defined $args{stdout};
+      if exists $args{stdout};
 
   ref( $args{stderr} ) =~ /^(?:ARRAY|CODE|GLOB|SCALAR)\z/
     or confess 'stderr: Must be one of ARRAY, CODE, GLOB or SCALAR reference'
-      if defined $args{stderr};
+      if exists $args{stderr};
 
   my $std_i = Proc::Hevy::Writer->new( stdin  => $args{stdin}  );
   my $std_o = Proc::Hevy::Reader->new( stdout => $args{stdout} );
@@ -52,9 +52,9 @@ sub exec {
   if( $pid == 0 ) {
     # child
 
-    $std_e->child( \*STDERR );
-    $std_o->child( \*STDOUT );
     $std_i->child( \*STDIN  );
+    $std_o->child( \*STDOUT );
+    $std_e->child( \*STDERR );
 
     # exec
     if( ref $args{command}->[0] eq 'CODE' ) {

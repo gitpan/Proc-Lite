@@ -1,3 +1,8 @@
+changes from 0.04 to 0.05
+=========================
+
+  * fixed the order of filehandle processing in the child process
+
 changes from 0.02 to 0.04
 =========================
 

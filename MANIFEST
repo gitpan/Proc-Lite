@@ -24,3 +24,4 @@ t/01-hevy-exec.t
 t/02-hevy-stdin.t
 t/03-hevy-stdxxx.t
 t/04-lite.t
+t/05-reopen.t

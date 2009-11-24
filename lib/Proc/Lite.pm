@@ -6,7 +6,7 @@ use warnings;
 use Carp;
 use Proc::Hevy;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 sub new {
@@ -17,7 +17,7 @@ sub new {
   my %args = @args;
 
   confess 'command: Required parameter'
-    unless exists $args{command};
+    unless defined $args{command};
 
   bless {
     command => $args{command},

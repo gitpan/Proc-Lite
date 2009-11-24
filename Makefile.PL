@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 BEGIN {
-  die "Windows is currently unsupported\n"
+  die "OS unsupported\n"
     if $^O eq 'MSWin32';
 }
 
