@@ -24,4 +24,4 @@ requires:
   IO::Pipe: 0.00
   IO::Select: 0.00
   POSIX: 0.00
-version: 0.06
+version: 0.07

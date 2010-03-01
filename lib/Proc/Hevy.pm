@@ -63,8 +63,9 @@ sub exec {
       exit 0x00;
     }
 
-    exec @{ $args{command} }
-      or confess "exec: $!";
+    exec @{ $args{command} };
+    warn "exec: $args{command}->[0]: $!\n";
+    exit 1;
   }
 
   # parent
