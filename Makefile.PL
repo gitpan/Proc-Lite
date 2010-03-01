@@ -16,6 +16,7 @@ requires 'Carp'       => '0.00';
 requires 'Errno'      => '0.00';
 requires 'IO::Pipe'   => '0.00';
 requires 'IO::Select' => '0.00';
+requires 'POSIX'      => '0.00';
 
 test_requires 'Test::More' => '0.00';
 

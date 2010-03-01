@@ -4,8 +4,9 @@ use strict;
 use warnings;
 
 use Carp;
-use IO::Pipe;
 use Errno qw( EWOULDBLOCK );
+use IO::Pipe;
+use POSIX ();
 
 
 sub new {
@@ -19,7 +20,7 @@ sub new {
 }
 
 sub child {
-  my ( $self, $std_h ) = @_;
+  my ( $self, $std_h, $fileno ) = @_;
 
   my $handle;
 
@@ -34,7 +35,7 @@ sub child {
       or confess "$self->{name}: open: /dev/null: $!\n";
   }
 
-  $std_h->fdopen( $handle, 'r' )
+  POSIX::dup2( $handle->fileno, $fileno )
     or confess "$self->{name}: fdopen: $!\n"
       if $std_h != $handle;
 }

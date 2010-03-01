@@ -52,9 +52,9 @@ sub exec {
   if( $pid == 0 ) {
     # child
 
-    $std_i->child( \*STDIN  );
-    $std_o->child( \*STDOUT );
-    $std_e->child( \*STDERR );
+    $std_i->child( \*STDIN,  0 );
+    $std_o->child( \*STDOUT, 1 );
+    $std_e->child( \*STDERR, 2 );
 
     # exec
     if( ref $args{command}->[0] eq 'CODE' ) {

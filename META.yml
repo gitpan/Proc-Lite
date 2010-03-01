@@ -23,4 +23,5 @@ requires:
   Errno: 0.00
   IO::Pipe: 0.00
   IO::Select: 0.00
-version: 0.05
+  POSIX: 0.00
+version: 0.06
