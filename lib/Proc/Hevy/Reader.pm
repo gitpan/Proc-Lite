@@ -52,7 +52,7 @@ sub parent {
     return;
   }
 
-  $self->{scratch} = '';
+  $self->{scratch} = undef;
 
   my $handle = $self->{pipe}->reader;
   $handle->blocking( 0 );
@@ -94,7 +94,7 @@ sub _pack {
     ${ $self->{buffer} } .= $data;
   }
   else {
-    my $scratch = $self->{scratch} .= $data;
+    my $scratch = ( defined $self->{scratch} ? $self->{scratch} : '' ) . $data;
 
     if( defined $/ ) {
       while( index( $scratch, $/ ) != -1 ) {
@@ -103,7 +103,7 @@ sub _pack {
       }
     }
 
-    $self->{scratch} = $scratch;
+    $self->{scratch} = length $scratch ? $scratch : undef;
   }
 }
 
@@ -111,7 +111,7 @@ sub _flush {
   my ( $self, $data ) = @_;
 
   return
-    unless length $data;
+    unless defined $data;
 
   my $buffer = $self->{buffer};
 
