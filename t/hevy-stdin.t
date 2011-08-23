@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 8;
+use Test::More;
 use Proc::Hevy;
 
 
@@ -19,6 +19,8 @@ ok_exec( 'stdin: CODE reference',  \&command, do { my @stdin = @values; sub { po
   local $\ = "\0";
   ok_exec( 'stdin: output record seperator', [ \&command, $\ ], \@values );
 }
+
+done_testing;
 
 
 sub ok_exec {

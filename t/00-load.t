@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 4;
+use Test::More;
 
 BEGIN {
   use_ok( 'Proc::Lite' );
@@ -13,3 +13,5 @@ BEGIN {
 }
 
 diag( "Testing Proc::Lite $Proc::Lite::VERSION, Perl $], $^X" );
+
+done_testing;

@@ -18,10 +18,12 @@ LICENSE
 Makefile.PL
 MANIFEST			This list of files
 META.yml
+MYMETA.json
+MYMETA.yml
 README
 t/00-load.t
-t/01-hevy-exec.t
-t/02-hevy-stdin.t
-t/03-hevy-stdxxx.t
-t/04-lite.t
-t/05-reopen.t
+t/hevy-exec.t
+t/hevy-stdin.t
+t/hevy-stdxxx.t
+t/lite.t
+t/reopen.t

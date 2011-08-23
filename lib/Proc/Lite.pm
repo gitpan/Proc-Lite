@@ -6,7 +6,7 @@ use warnings;
 use Carp;
 use Proc::Hevy;
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 
 sub new {
@@ -20,11 +20,14 @@ sub new {
     unless defined $args{command};
 
   bless {
-    command => $args{command},
-    stdin   => $args{stdin},
-    stdout  => [ ],
-    stderr  => [ ],
-    status  => undef,
+    command  => $args{command},
+    stdin    => $args{stdin},
+    stdout   => [ ],
+    stderr   => [ ],
+    status   => undef,
+    parent   => $args{parent},
+    child    => $args{child},
+    priority => $args{priority},
   }
 }
 
@@ -37,10 +40,13 @@ sub run {
   my ( $self ) = @_;
 
   my $status = Proc::Hevy->exec(
-    command => $self->{command},
-    stdin   => $self->{stdin},
-    stdout  => $self->{stdout},
-    stderr  => $self->{stderr},
+    command  => $self->{command},
+    stdin    => $self->{stdin},
+    stdout   => $self->{stdout},
+    stderr   => $self->{stderr},
+    parent   => $self->{parent},
+    child    => $self->{child},
+    priority => $self->{priority},
   );
 
   $self->{status} = $status >> 8;
@@ -130,6 +136,28 @@ Proc::Lite - A lightweight module for running processes synchronously
     my $proc = Proc::Lite->exec( \&echo, @ARGV );
   }
 
+  {
+    my $proc = Proc::Lite->new(
+      priority => 10,
+
+      command => sub {
+        print "In child process ($$): command\n";
+      },
+
+      parent => sub {
+        my ( $pid ) = @_;
+
+        print "In parent process ($$): child=$pid\n";
+      },
+
+      child => sub {
+        my ( $ppid ) = @_;
+
+        print "In child process ($$): parent=$ppid\n";
+      },
+    )->run;
+  }
+
 =head1 DESCRIPTION
 
 C<Proc::Lite> is a lightweight, easy-to-use wrapper around
@@ -181,6 +209,23 @@ to the child process.  The fourth form simply re-opens the
 child's C<STDIN> handle to the given filehandle allowing a
 pass-through effect.  If this option is not given, the
 child's C<STDIN> will be reopened to C<'/dev/null'>.
+
+=item C<parent =E<gt> \&code>
+
+If specified, the given C<CODE> reference is called in the
+parent process after the C<fork()> is performed.  The child
+process's PID is passed in as a single argument.
+
+=item C<child =E<gt> \&code>
+
+If specified, the given C<CODE> reference is called in the
+child process after the C<fork()> is performed.  The parent
+process's PID is passed in as a single argument.
+
+=item C<priority =E<gt> $delta>
+
+If specified, adjusts the child process's priority according
+to the value specified.
 
 =back
 

@@ -4,11 +4,11 @@ author:
   - 'jason hord <pravus@cpan.org>'
 build_requires:
   ExtUtils::MakeMaker: 6.42
-  Test::More: 0.00
+  Test::More: 0
 configure_requires:
-  ExtUtils::MakeMaker: 6.42
-distribution_type: module
-generated_by: 'Module::Install version 1.01'
+  ExtUtils::MakeMaker: 0
+dynamic_config: 0
+generated_by: 'ExtUtils::MakeMaker version 6.59, CPAN::Meta::Converter version 2.112150'
 license: mit
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -16,14 +16,12 @@ meta-spec:
 name: Proc-Lite
 no_index:
   directory:
-    - inc
     - t
+    - inc
 requires:
-  Carp: 0.00
-  Errno: 0.00
-  IO::Pipe: 0.00
-  IO::Select: 0.00
-  POSIX: 0.00
-resources:
-  license: http://opensource.org/licenses/mit-license.php
+  Carp: 0
+  Errno: 0
+  IO::Pipe: 0
+  IO::Select: 0
+  POSIX: 0
 version: 0.09

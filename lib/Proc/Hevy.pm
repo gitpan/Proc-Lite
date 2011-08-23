@@ -40,6 +40,17 @@ sub exec {
     or confess 'stderr: Must be one of ARRAY, CODE, GLOB or SCALAR reference'
       if exists $args{stderr};
 
+  ref( $args{parent} ) eq 'CODE'
+    or confess 'parent: Must be a CODE reference'
+      if defined $args{parent};
+
+  ref( $args{child} ) eq 'CODE'
+    or confess 'child: Must be a CODE reference'
+      if defined $args{child};
+
+  $args{priority} = 0
+    unless defined $args{priority};
+
   my $std_i = Proc::Hevy::Writer->new( stdin  => $args{stdin}  );
   my $std_o = Proc::Hevy::Reader->new( stdout => $args{stdout} );
   my $std_e = Proc::Hevy::Reader->new( stderr => $args{stderr} );
@@ -52,15 +63,32 @@ sub exec {
   if( $pid == 0 ) {
     # child
 
+    # run callback, if needed
+    $args{child}->( getppid )
+      if defined $args{child};
+
+    # set filehandles
     $std_i->child( \*STDIN,  0 );
     $std_o->child( \*STDOUT, 1 );
     $std_e->child( \*STDERR, 2 );
 
+    # set process priority, if needed
+    if( $args{priority} ) {
+      my $priority = getpriority( 0, $$ );
+      defined $priority
+        or die "getpriority(): $$: $!\n";
+
+      $priority += $args{priority};
+
+      setpriority( 0, $$, $priority )
+        or die "setpriority(): $$: $!\n";
+    }
+
     # exec
-    if( ref $args{command}->[0] eq 'CODE' ) {
+    if( ref( $args{command}->[0] ) eq 'CODE' ) {
       my $sub = shift @{ $args{command} };
       $sub->( @{ $args{command} } );
-      exit 0x00;
+      exit 0;
     }
 
     exec @{ $args{command} };
@@ -70,6 +98,11 @@ sub exec {
 
   # parent
 
+  # run callback, if needed
+  $args{parent}->( $pid )
+    if defined $args{parent};
+
+  # set filehandles
   my ( $select_w, $select_r ) = ( IO::Select->new, IO::Select->new );
 
   my %handles = (
@@ -78,6 +111,7 @@ sub exec {
     $std_e->parent( $select_r ),
   );
 
+  # loop
   while( $select_r->count or $select_w->count ) {
     my ( $readers, $writers ) = IO::Select->select( $select_r, $select_w );
 
@@ -88,6 +122,7 @@ sub exec {
       for @$writers;
   }
 
+  # use waitpid() to avoid signal handlers
   my $rc = waitpid $pid, 0;
   confess "waitpid: $!"
     if $rc == -1;
@@ -165,6 +200,31 @@ Proc::Hevy - A heavyweight module for running processes synchronously
     # really useless use of cat
     my $status = Proc::Hevy->exec(
       command => 'cat </dev/null 1>/dev/null 2>/dev/null',
+    );
+  }
+
+  {
+    my $status = Proc::Hevy->exec(
+      stdout => \*STDOUT,
+      stderr => \*STDERR,
+
+      priority => 10,
+
+      command => sub {
+        print "In child process ($$): command\n";
+      },
+
+      parent => sub {
+        my ( $pid ) = @_;
+
+        print "In parent process ($$): child=$pid\n";
+      },
+
+      child => sub {
+        my ( $ppid ) = @_;
+
+        print "In child process ($$): parent=$ppid\n";
+      },
     );
   }
 
@@ -256,6 +316,23 @@ re-opened to C<'/dev/null'> for reading.
 The options specified here are similar to the C<stdout>
 options except that the child process's C<STDERR> handle
 is affected.
+
+=item C<parent =E<gt> \&code>
+
+If specified, the given C<CODE> reference is called in the
+parent process after the C<fork()> is performed.  The child
+process's PID is passed in as a single argument.
+
+=item C<child =E<gt> \&code>
+
+If specified, the given C<CODE> reference is called in the
+child process after the C<fork()> is performed.  The parent
+process's PID is passed in as a single argument.
+
+=item C<priority =E<gt> $delta>
+
+If specified, adjusts the child process's priority according
+to the value specified.
 
 =back
 

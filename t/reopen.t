@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 4;
+use Test::More;
 use Proc::Lite;
 
 close STDIN  or die "STDIN: close: $!\n";
@@ -29,3 +29,5 @@ is( $o->stdout->[0], 'outer: inner: STDOUT', 'stdout: value' );
 
 ok( @{ $o->stderr } == 1, 'stderr' );
 is( $o->stderr->[0], 'outer: inner: STDERR', 'stderr: value' );
+
+done_testing;

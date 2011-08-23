@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 20;
+use Test::More;
 use Proc::Hevy;
 
 
@@ -57,5 +57,7 @@ use Proc::Hevy;
   is( $stderr->[0], "foo\nbar\nbaz\n", 'stdout: input record seperator' );
 }
 
+done_testing;
 
-sub command { for my $text qw( foo bar baz ) { print STDOUT "$text\n"; print STDERR "$text\n"; } }
+
+sub command { for my $text (qw( foo bar baz )) { print STDOUT "$text\n"; print STDERR "$text\n"; } }
