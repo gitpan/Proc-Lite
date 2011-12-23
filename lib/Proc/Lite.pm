@@ -6,7 +6,7 @@ use warnings;
 use Carp;
 use Proc::Hevy;
 
-our $VERSION = '0.09';
+our $VERSION = '0.09_01';
 
 
 sub new {
@@ -28,7 +28,7 @@ sub new {
     parent   => $args{parent},
     child    => $args{child},
     priority => $args{priority},
-  }
+  }, $class
 }
 
 sub exec {
