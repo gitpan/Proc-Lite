@@ -36,7 +36,7 @@ sub child {
   }
 
   POSIX::dup2( $handle->fileno, $fileno )
-    or confess "$self->{name}: fdopen: $!\n"
+    or confess "$self->{name}: dup2: $!\n"
       if $std_h != $handle;
 }
 

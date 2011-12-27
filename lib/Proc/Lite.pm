@@ -6,7 +6,7 @@ use warnings;
 use Carp;
 use Proc::Hevy;
 
-our $VERSION = '0.09_01';
+our $VERSION = '0.09_02';
 
 
 sub new {
