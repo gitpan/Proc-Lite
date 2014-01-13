@@ -12,13 +12,13 @@ name 'Proc-Lite';
 all_from 'lib/Proc/Lite.pm';
 license 'MIT';
 
-requires 'Carp'       => '0.00';
-requires 'Errno'      => '0.00';
-requires 'IO::Pipe'   => '0.00';
-requires 'IO::Select' => '0.00';
-requires 'POSIX'      => '0.00';
+requires 'Carp';
+requires 'Errno';
+requires 'IO::Pipe';
+requires 'IO::Select';
+requires 'POSIX';
 
-test_requires 'Test::More' => '0.00';
+test_requires 'Test::More';
 
 auto_install;
 WriteAll;

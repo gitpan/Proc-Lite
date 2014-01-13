@@ -134,6 +134,8 @@ sub exec {
 1
 __END__
 
+=pod
+
 =head1 NAME
 
 Proc::Hevy - A heavyweight module for running processes synchronously
@@ -230,31 +232,27 @@ Proc::Hevy - A heavyweight module for running processes synchronously
 
 =head1 DESCRIPTION
 
-C<Proc::Hevy> is a simplistic module for spawning child
+Proc::Hevy is a simplistic module for spawning child
 processes in a synchronous manner.  It provides a simple interface
 for passing data to a process's C<STDIN> while also offering several
 methods for buffering C<STDOUT> and C<STDERR> output.
 
 =head1 METHODS
 
-=over 2
-
-=item B<exec( %args )>
+=head2 exec( %args )
 
 C<exec()> starts a child process and buffers input and output
 according to the given arguments.  Once the process exits, the
 exit status (as in C<$?>) is returned.  C<%args> may contain
 the following options:
 
-=over 4
+=head3 command =E<gt> $command
 
-=item C<command =E<gt> $command>
+=head3 command =E<gt> \@command
 
-=item C<command =E<gt> \@command>
+=head3 command =E<gt> \&code
 
-=item C<command =E<gt> \&code>
-
-=item C<command =E<gt> [ \&code, @args ]>
+=head3 command =E<gt> [ \&code, @args ]
 
 Specifies the command to run.  The first form may expand shell
 meta-characters while the second form will not.  Review the
@@ -263,13 +261,13 @@ form will run the given C<CODE> reference in the child process
 and the fourth form does the same, but also passes in C<@args>
 as arguments to the subroutine.  This option is required.
 
-=item C<stdin =E<gt> $buffer>
+=head3 stdin =E<gt> $buffer
 
-=item C<stdin =E<gt> \@buffer>
+=head3 stdin =E<gt> \@buffer
 
-=item C<stdin =E<gt> \&code>
+=head3 stdin =E<gt> \&code
 
-=item C<stdin =E<gt> \*GLOB>
+=head3 stdin =E<gt> \*GLOB
 
 If specified, identifies a data source that will be used to
 pipe data to the child process's C<STDIN> handle.  The first
@@ -285,13 +283,13 @@ handle to the given filehandle allowing a pass-through effect.
 If not specified, the child process's C<STDIN> handle is
 re-opened to C<'/dev/null'> for reading.
 
-=item C<stdout =E<gt> \$buffer>
+=head3 stdout =E<gt> \$buffer
 
-=item C<stdout =E<gt> \@buffer>
+=head3 stdout =E<gt> \@buffer
 
-=item C<stdout =E<gt> \&code>
+=head3 stdout =E<gt> \&code
 
-=item C<stdout =E<gt> \*GLOB>
+=head3 stdout =E<gt> \*GLOB
 
 If specified, identifies a data destination that will be used
 to pipe from the child process's C<STDOUT> handle.  The first
@@ -305,38 +303,34 @@ handle to the given filehandle allowing a pass-through effect.
 If not specified, the child process's C<STDOUT> handle is
 re-opened to C<'/dev/null'> for reading.
 
-=item C<stderr =E<gt> \$buffer>
+=head3 stderr =E<gt> \$buffer
 
-=item C<stderr =E<gt> \@buffer>
+=head3 stderr =E<gt> \@buffer
 
-=item C<stderr =E<gt> \&code>
+=head3 stderr =E<gt> \&code
 
-=item C<stderr =E<gt> \*GLOB>
+=head3 stderr =E<gt> \*GLOB
 
 The options specified here are similar to the C<stdout>
 options except that the child process's C<STDERR> handle
 is affected.
 
-=item C<parent =E<gt> \&code>
+=head3 parent =E<gt> \&code
 
 If specified, the given C<CODE> reference is called in the
 parent process after the C<fork()> is performed.  The child
 process's PID is passed in as a single argument.
 
-=item C<child =E<gt> \&code>
+=head3 child =E<gt> \&code
 
 If specified, the given C<CODE> reference is called in the
 child process after the C<fork()> is performed.  The parent
 process's PID is passed in as a single argument.
 
-=item C<priority =E<gt> $delta>
+=head3 priority =E<gt> $delta
 
 If specified, adjusts the child process's priority according
 to the value specified.
-
-=back
-
-=back
 
 =head1 BUGS
 
@@ -349,7 +343,7 @@ jason hord E<lt>pravus@cpan.orgE<gt>
 
 =head1 SEE ALSO
 
-=over 2
+=over 4
 
 =item L<Proc::Lite>
 
@@ -357,7 +351,7 @@ jason hord E<lt>pravus@cpan.orgE<gt>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2009, jason hord
+Copyright (c) 2009-2014, jason hord
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

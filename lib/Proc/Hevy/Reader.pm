@@ -130,21 +130,21 @@ sub _flush {
 1
 __END__
 
+=pod
+
 =head1 NAME
 
 Proc::Hevy::Reader - A reader pipe implementation for Proc::Hevy
 
 =head1 DESCRIPTION
 
-C<Proc::Heavy::Reader> implements a reader pipe that reads
+Proc::Heavy::Reader implements a reader pipe that reads
 data from a child process handle to a provided buffer.  This is
 used when capturing C<STDOUT> and C<STDERR> data from a child process.
 
 =head1 INTERFACE
 
-=over 2
-
-=item B<new( $name, $buffer )>
+=head2 new( $name, $buffer )
 
 Creates a new C<Proc::Hevy::Reader> object.  C<$name> is a
 symbolic name for the reader.  C<$buffer> is the storage mechanism
@@ -152,7 +152,7 @@ to be used for data read from the child process.  It can either
 be a simple scalar, an C<ARRAY> reference, a C<CODE> reference or a
 C<GLOB> reference.
 
-=item B<child( $handle )>
+=head2 child( $handle )
 
 Performs actions suitable when running as part of the child process.
 This includes re-opening the provided C<$handle> to a filehandle
@@ -160,21 +160,19 @@ that is created based on the type of storage buffer configured
 in C<new()>.  If no buffer was configured, C<'/dev/null'> is
 opened for writing.
 
-=item B<parent( $select )>
+=head2 parent( $select )
 
 Performs actions suitable when running as part of the parent process.
 This includes adding filehandles to the provided C<$select> object
 that should be monitored for readability.
 
-=item B<read>
+=head2 read
 
 Performs the actual read from the child process and stores any
 read data into the storage buffer configured in C<new()>.  At
 EOF, applicable filehandles are closed and removed from the
 select object used in the call to C<parent()>.  Any system
 errors are considered fatal.
-
-=back
 
 =head1 BUGS
 
@@ -187,7 +185,7 @@ jason hord E<lt>pravus@cpan.orgE<gt>
 
 =head1 SEE ALSO
 
-=over 2
+=over 4
 
 =item L<Proc::Hevy>
 
@@ -195,7 +193,7 @@ jason hord E<lt>pravus@cpan.orgE<gt>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2009, jason hord
+Copyright (c) 2009-2014, jason hord
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

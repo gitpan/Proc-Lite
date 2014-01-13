@@ -1,3 +1,17 @@
+changes from 0.09 to 0.10
+=========================
+
+  * fixed new() in Proc::Lite to use 2-arg form of bless
+
+  * fixed error message in Proc::Hevy::Writer to reflect call to POSIX::dup2()
+
+  * added debugging to t/reopen.t for failed test reports
+
+  * removed MYMETA.yml and MYMETA.json from module distribution
+    per CPAN standards
+
+  * updated documentation to reflect new formatting standards
+
 changes from 0.08 to 0.09
 =========================
 

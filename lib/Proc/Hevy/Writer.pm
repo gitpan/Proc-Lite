@@ -130,21 +130,21 @@ sub _flush {
 1
 __END__
 
+=pod
+
 =head1 NAME
 
 Proc::Hevy::Writer - A writer pipe implementation for Proc::Hevy
 
 =head1 DESCRIPTION
 
-C<Proc::Hevy::Writer> implements a writer pipe that
-writes data to a child process from a provided buffer.  This
-is used when writing to a child process's C<STDIN>.
+Proc::Hevy::Writer implements a writer pipe that writes data to
+a child process from a provided buffer.  This is used when writing
+to a child process's C<STDIN>.
 
 =head1 INTERFACE
 
-=over 2
-
-=item B<new( $name, $buffer )>
+=head2 new( $name, $buffer )
 
 Creates a new C<Proc::Hevy::Writer> object.  C<$name>
 is a symbolic name for the writer.  C<$buffer> is the source
@@ -152,7 +152,7 @@ mechanism to used for data written to the child process.  It
 can either be a simple scalar, an C<ARRAY> reference, a C<CODE>
 reference or a C<GLOB> reference.
 
-=item B<child( $handle )>
+=head2 child( $handle )
 
 Performs actions suitable when running as part of the child
 process.  This includes re-opening the provided C<$handle>
@@ -160,21 +160,19 @@ to a filehandle that is created based on the type of source
 buffer configured in C<new()>.  If no buffer was configured,
 C<'/dev/null'> is opened for reading.
 
-=item B<parent( $select )>
+=head2 parent( $select )
 
 Performs actions suitable when running as part of the parent
 process.  This includes adding filehandles to the provided
 C<$select> object that should be monitored for writability.
 
-=item B<write>
+=head2 write
 
 Performs the actual write to the child process consuming
 data from the source buffer configured in C<new()>.  When
 the source buffer is empty, applicable filehandles are
 closed and removed from the select object used in the call
 to C<parent()>.  Any system errors are considered fatal.
-
-=back
 
 =head1 BUGS
 
@@ -187,7 +185,7 @@ jason hord E<lt>pravus@cpan.orgE<gt>
 
 =head1 SEE ALSO
 
-=over 2
+=over 4
 
 =item L<Proc::Hevy>
 
@@ -195,7 +193,7 @@ jason hord E<lt>pravus@cpan.orgE<gt>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2009, jason hord
+Copyright (c) 2009-2014, jason hord
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

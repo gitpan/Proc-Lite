@@ -6,7 +6,7 @@ use warnings;
 use Carp;
 use Proc::Hevy;
 
-our $VERSION = '0.09_02';
+our $VERSION = '0.10';
 
 
 sub new {
@@ -65,6 +65,8 @@ sub success { my ( $self ) = @_; $self->status == 0 }
 
 1
 __END__
+
+=pod
 
 =head1 NAME
 
@@ -160,29 +162,25 @@ Proc::Lite - A lightweight module for running processes synchronously
 
 =head1 DESCRIPTION
 
-C<Proc::Lite> is a lightweight, easy-to-use wrapper around
+Proc::Lite is a lightweight, easy-to-use wrapper around
 L<Proc::Hevy>.  It is meant to provide a simple interface
 for common use cases.
 
 =head1 CLASS METHODS
 
-=over 2
-
-=item B<new( %args )>
+=head2 new( %args )
 
 Creates a L<Proc::Lite> object.  The command given is
 not executed at this time.  See the C<run()> method for actually
 running the command.  C<%args> may contain the following options:
 
-=over 4
+=head3 command =E<gt> $command
 
-=item C<command =E<gt> $command>
+=head3 command =E<gt> \@command
 
-=item C<command =E<gt> \@command>
+=head3 command =E<gt> \&code
 
-=item C<command =E<gt> \&code>
-
-=item C<command =E<gt> [ \&code, @args ]>
+=head3 command =E<gt> [ \&code, @args ]
 
 Specifies the command to run.  The first form may expand shell
 meta-characters while the second form will not.  Review the
@@ -191,13 +189,13 @@ form will run the given C<CODE> reference in the child process
 and the fourth form does the same, but also passes in C<@args>
 as arguments to the subroutine.  This option is required.
 
-=item C<stdin =E<gt> $buffer>
+=head3 stdin =E<gt> $buffer
 
-=item C<stdin =E<gt> \@buffer>
+=head3 stdin =E<gt> \@buffer
 
-=item C<stdin =E<gt> \&code>
+=head3 stdin =E<gt> \&code
 
-=item C<stdin =E<gt> \*GLOB>
+=head3 stdin =E<gt> \*GLOB
 
 Specifies data that may be sent to the child process's C<STDIN>.
 The first form simply sends the given string of bytes to the
@@ -210,67 +208,59 @@ child's C<STDIN> handle to the given filehandle allowing a
 pass-through effect.  If this option is not given, the
 child's C<STDIN> will be reopened to C<'/dev/null'>.
 
-=item C<parent =E<gt> \&code>
+=head3 parent =E<gt> \&code
 
 If specified, the given C<CODE> reference is called in the
 parent process after the C<fork()> is performed.  The child
 process's PID is passed in as a single argument.
 
-=item C<child =E<gt> \&code>
+=head3 child =E<gt> \&code
 
 If specified, the given C<CODE> reference is called in the
 child process after the C<fork()> is performed.  The parent
 process's PID is passed in as a single argument.
 
-=item C<priority =E<gt> $delta>
+=head3 priority =E<gt> $delta
 
 If specified, adjusts the child process's priority according
 to the value specified.
 
-=back
+=head2 exec( $command )
 
-=item B<exec( $command )>
+=head2 exec( @command )
 
-=item B<exec( @command )>
-
-=item B<exec( \&code, @args )>
+=head2 exec( \&code, @args )
 
 This is a simple wrapper method for calling C<new()> and
 C<run()> in a single step.  The three forms correspond to
 the ways C<new()>'s C<command> argument may be specified.
 
-=back
-
 =head1 OBJECT METHODS
 
-=over 2
-
-=item B<run>
+=head2 run
 
 Runs the command specified in C<new()>.  It returns the
 C<Proc::Lite> object so that it can be called in
 conjunction with C<new()> (C<Proc::Lite-E<gt>new( ... )-E<gt>run>).
 
-=item B<status>
+=head2 status
 
 Returns the exit status from the process.
 
-=item B<stdout>
+=head2 stdout
 
 Returns the C<STDOUT> output from the child process.  In
 list context, the output is returned as a list.  In scalar
 context, an C<ARRAY> reference is returned.
 
-=item B<stderr>
+=head2 stderr
 
 Similar to C<stdout> except that the C<STDERR> output is returned.
 
-=item B<success>
+=head2 success
 
 Returns true if the process exited with a status of 0.  Otherwise
 returns false.
-
-=back
 
 =head1 BUGS
 
@@ -283,7 +273,7 @@ jason hord E<lt>pravus@cpan.orgE<gt>
 
 =head1 SEE ALSO
 
-=over 2
+=over 4
 
 =item L<Proc::Hevy>
 
@@ -291,7 +281,7 @@ jason hord E<lt>pravus@cpan.orgE<gt>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2009, jason hord
+Copyright (c) 2009-2014, jason hord
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
